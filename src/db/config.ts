@@ -2,9 +2,9 @@ import { createClient } from '@libsql/client';
 import { drizzle } from 'drizzle-orm/libsql';
 import * as schema from './schema';
 
-const client = createClient({
-  url: "https://padel-p4u1.aws-eu-west-3.turso.io",
-  authToken: "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzMzMDc2NDQsImlhdCI6MTczMzMwNDA0NCwiaWQiOiI2Yjk0Nzk4YS00M2U5LTRkMGEtOGJkNS0xYmU2NTQxNjEyMzQifQ.Yrv5ozpM8MZrwS195R3Wiz0sq7QM4Dkpf9fn0SQeuR16iQxPgcriyiBqAOWUNnBcuKhJi0ZX0bwaNRANk6oeCA"
+export const client = createClient({
+  url: import.meta.env.VITE_TURSO_DATABASE_URL,
+  authToken: import.meta.env.VITE_TURSO_AUTH_TOKEN,
 });
 
 export const db = drizzle(client, { schema });
