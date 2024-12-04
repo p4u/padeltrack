@@ -1,0 +1,207 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #ffd700;
+  --secondary: #00ff9d;
+  --background: #1a1b26;
+  --text: #ffffff;
+  --accent: #ff0080;
+  --dark-bg: #1f2937;
+  --card-bg: rgba(31, 41, 55, 0.95);
+}
+
+/* PWA specific styles */
+@media (display-mode: standalone) {
+  body {
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  
+  input, button {
+    touch-action: manipulation;
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 5px var(--primary),
+                 0 0 10px var(--primary),
+                 0 0 15px var(--primary);
+  }
+  50% {
+    text-shadow: 0 0 10px var(--primary),
+                 0 0 20px var(--primary),
+                 0 0 30px var(--primary);
+  }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text);
+  font-family: 'Press Start 2P', system-ui, sans-serif;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    transparent 0%,
+    rgba(0, 0, 0, 0.05) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  animation: scanline 8s linear infinite;
+}
+
+.retro-container {
+  @apply border-4 rounded-lg p-4 sm:p-6 relative;
+  background: var(--card-bg);
+  border-image: linear-gradient(45deg, var(--primary), var(--accent)) 1;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+  animation: blink 2s infinite;
+}
+
+.retro-container::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--primary), var(--accent));
+  z-index: -1;
+  filter: blur(10px);
+  opacity: 0.3;
+}
+
+.retro-button {
+  @apply px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition-all duration-200 transform hover:scale-105 relative overflow-hidden text-sm sm:text-base;
+  background: var(--primary);
+  border: 3px solid white;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.8);
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+  color: #000;
+}
+
+.retro-button:hover {
+  animation: glow 1.5s ease-in-out infinite;
+  background: var(--accent);
+  color: white;
+}
+
+.retro-button:active {
+  @apply transform translate-x-1 translate-y-1;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
+}
+
+.retro-button:disabled {
+  @apply opacity-50 cursor-not-allowed;
+  animation: none;
+  background: #4a5568;
+  color: #a0aec0;
+}
+
+.retro-input {
+  @apply px-3 sm:px-4 py-2 sm:py-3 rounded-lg bg-white text-black border-4 text-sm sm:text-base;
+  border-color: var(--primary);
+  font-family: 'Press Start 2P', system-ui, sans-serif;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.retro-input:focus {
+  @apply outline-none;
+  border-color: var(--accent);
+  box-shadow: 0 0 15px rgba(255, 0, 128, 0.3);
+}
+
+/* Table Styles */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  @apply rounded-lg overflow-hidden text-sm sm:text-base;
+  color: var(--text);
+}
+
+th {
+  @apply bg-opacity-20 bg-primary px-2 sm:px-4 py-2 text-white;
+  border-bottom: 2px solid var(--primary);
+  background: var(--dark-bg);
+}
+
+td {
+  @apply px-2 sm:px-4 py-2 text-white;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  background: var(--card-bg);
+}
+
+tr:hover td {
+  @apply bg-opacity-80;
+  background: var(--dark-bg);
+}
+
+/* Score Display */
+.score-display {
+  @apply text-2xl sm:text-4xl font-bold text-center p-4;
+  color: var(--primary);
+  text-shadow: 0 0 10px var(--primary);
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Player Selection */
+.player-card {
+  @apply px-3 sm:px-4 py-2 sm:py-3 rounded-lg border-2 transition-all text-sm sm:text-base;
+  background: var(--card-bg);
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+  color: var(--text);
+}
+
+.player-card.selected {
+  background: var(--accent);
+  border-color: white;
+  color: white;
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Player List Item */
+.player-list-item {
+  @apply px-3 sm:px-4 py-2 sm:py-3 rounded-lg border-2 text-sm sm:text-base;
+  background: var(--card-bg);
+  border-color: var(--primary);
+  color: var(--text);
+}
+
+.animate-bounce {
+  animation: float 2s ease-in-out infinite;
+}
